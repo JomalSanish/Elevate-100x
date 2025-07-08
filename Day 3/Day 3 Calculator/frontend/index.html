@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Calculator</title>
+    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center;">
+        <input placeholder="First NUmber" type="number" id="num1"/>
+        <input placeholder="Second Numberr" type="number" id="num2"/>
+    </div>
+    <br>
+    <div style="display: flex; justify-content: center;">
+        <button onclick="calculate('sum')">+</button>
+        <button onclick="calculate('sub')">-</button>
+        <button onclick="calculate('mul')">*</button>
+        <button onclick="calculate('div')">/</button>
+        <button onclick="calculate('pow')">^</button>
+        <button onclick="calculate('mod')">%</button>
+    </div>
+    <h3 style="display: flex;justify-content: center;" id="ans">Result</h3>
+</body>
+</html>

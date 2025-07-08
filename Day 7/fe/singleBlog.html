@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Blog</title>
+</head>
+
+<body>
+    <div id="singleBlog" style="padding: 2%;">
+    </div>
+    <script>
+        window.onload = function () {
+            const data = JSON.parse(localStorage.getItem("selectedBlog"));
+            const container = document.getElementById("singleBlog");
+            container.innerHTML = "";
+            var newdiv = document.createElement("div");
+            newdiv.innerHTML = `<div id='${data.id}' style="border-radius: 5px;border: 2px solid rgb(92, 9, 9); padding: 2%; margin-bottom: 2%;">
+                <div style="display: flex; justify-content: space-between "><h3>${data.title}</h3><h5>UserId: ${data.userid}</h5></div><hr><p>${data.content}</p></div>`
+            container.appendChild(newdiv)
+        }
+    </script>
+</body>
+
+</html>
