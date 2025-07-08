@@ -65,9 +65,9 @@ app.post('/adminSignin', function (req, res) {
     prisma.users.findFirst({ where: { username: signinDetails.username, password: signinDetails.password, role: 0 } })
         .then((admin) => {
             if (admin) {
-                const dataToBeSigned  = {
-                    id:admin.id,
-                    role:admin.role
+                const dataToBeSigned = {
+                    id: admin.id,
+                    role: admin.role
                 }
                 const token = jwt.sign(dataToBeSigned, "random119");
                 res.send(token);
@@ -87,9 +87,9 @@ app.post('/userSignin', function (req, res) {
     prisma.users.findFirst({ where: { username: signinDetails.username, password: signinDetails.password, role: 1 } })
         .then((user) => {
             if (user) {
-                const dataToBeSigned  = {
-                    id:user.id,
-                    role:user.role
+                const dataToBeSigned = {
+                    id: user.id,
+                    role: user.role
                 }
                 const token = jwt.sign(dataToBeSigned, "random119");
                 res.send(token);
@@ -104,61 +104,68 @@ app.post('/userSignin', function (req, res) {
 }
 );
 
-app.post('/createQuiz', authMiddleware, function(req,res){
-    if(req.decoded.role === 0){
+app.post('/createQuiz', authMiddleware, function (req, res) {
+    if (req.decoded.role === 0) {
         prisma.quizes.create({
-            data:{
+            data: {
                 title: req.body.title,
                 userid: req.decoded.id
             }
         })
-        .then((quiz) => {
-            res.json({
-                quizid:quiz.id,
-                msg:"Quiz created"
+            .then((quiz) => {
+                res.json({
+                    quizid: quiz.id,
+                    msg: "Quiz created"
+                })
             })
-        })
-        .catch((err) => {
-            if (err.name == "PrismaClientKnownRequestError") {
-                res.status(401).send("Use a different title for the quiz")
-            }
-            else {
-                res.status(401).send("quiz creation failed")
-            }
-        })
+            .catch((err) => {
+                if (err.name == "PrismaClientKnownRequestError") {
+                    res.status(401).send("Use a different title for the quiz")
+                }
+                else {
+                    res.status(401).send("quiz creation failed")
+                }
+            })
     }
-    else{
+    else {
         res.status(401).send("You are not authorised to create quizes")
     }
 })
 
-app.post('/addQuestion/:quizid', authMiddleware, function(req,res){
- if(req.decoded.role === 0){
+app.post('/addQuestion/:quizid', authMiddleware, function (req, res) {
+    if (req.decoded.role === 0) {
         prisma.questions.create({
-            data:{
-                question : req.body.question,
-                answer  : req.body.answer,
-                quizid : req.params.quizid
+            data: {
+                question: req.body.question,
+                answer: req.body.answer,
+                quizid: parseInt(req.params.quizid)
             }
         })
-        .then((question) => {
-            req.body.options.forEach(element => {
-                prisma.options.create({
-                data:{
-                    option : element,
-                    questionid: question.id
-                }
+            .then((question) => {
+                req.body.options.forEach(element => {
+                    prisma.options.create({
+                        data: {
+                            option: element,
+                            questionid: question.id
+                        }
+                    })
+                        .then((option) => { })
+                        .catch((err) => {
+                            return res.status(401).send("Adding options failed")
+                        })
+                });
+                res.send("Question added")
             })
-                
-            });
-        })
-        .catch((err) => {
-            res.status(401).send("Adding questions failed")
-        })
+            .catch((err) => {
+                res.status(401).send(err)
+            })
+    }
+    else {
+        res.status(401).send("You are not authorised to add questions")
     }
 })
-    
-    
-app.listen(3000,()=>{
+
+
+app.listen(3000, () => {
     console.log("Server started at port 3000")
 })
