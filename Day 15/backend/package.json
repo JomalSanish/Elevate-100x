@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "day-15",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.11.1",
-    "cors": "^2.8.5",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "prisma": "^6.11.1",
     "ws": "^8.18.3"
   }
 }
