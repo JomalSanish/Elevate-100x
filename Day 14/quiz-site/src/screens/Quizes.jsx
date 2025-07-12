@@ -3,7 +3,7 @@ function Quizes({ quizzes = [], setQuizzes, onQuizClick, websocket }) {
     function startQuiz(e, quizId) {
         e.stopPropagation();
         if (websocket) {
-            websocket.send(`start:${quizId}`);
+            websocket.send(JSON.stringify({ type: "start", quizId }));  
         } else {
             console.error("WebSocket is not connected");
         }

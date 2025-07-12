@@ -170,14 +170,19 @@ app.post('/addQuestion/:quizid', authMiddleware, function (req, res) {
 })
 
 app.get('/viewQuizes', function (req, res) {
+    if (req.decoded.role === 0) {
     prisma.quizes.findMany()
         .then((quizes) => {
             res.json(quizes)
         })
+    }
+    else {
+        res.status(401).send("you are not authorised to add questions")
+    }
 })
 
-app.get('/viewQuestions/:quizid', async function (req, res) {
-    try {
+app.get('/viewQuestions/:quizid', authMiddleware, async function (req, res) {
+if (req.decoded.role === 0) {
         const quizid = parseInt(req.params.quizid);
 
         const questions = await prisma.questions.findMany({
@@ -194,9 +199,9 @@ app.get('/viewQuestions/:quizid', async function (req, res) {
         );
 
         res.json(questionsWithOptions);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Failed to fetch questions and options");
+    }
+    else {
+        res.status(401).send("you are not authorised to add questions")
     }
 });
 

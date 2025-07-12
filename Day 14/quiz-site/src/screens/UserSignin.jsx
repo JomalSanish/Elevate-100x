@@ -12,7 +12,7 @@ function UserSignin() {
             alert("Invalid inputs");
             return;
         }
-        axios.post("http://localhost:3000/adminSignin", {
+        axios.post("http://localhost:3000/UserSignin", {
             username: usernameInput,
             password: passwordInput
         })

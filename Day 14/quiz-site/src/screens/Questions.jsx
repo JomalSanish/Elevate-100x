@@ -13,7 +13,7 @@ function Questions({ questions = [], setQuestions, websocket }) {
     function sendQuestion(e, questionObj) {
         e.stopPropagation();
         if (websocket) {
-            websocket.send(JSON.stringify(questionObj));
+            websocket.send(JSON.stringify({ type: "question", data: questionObj }));
         } else {
             console.error("WebSocket is not connected");
         }
